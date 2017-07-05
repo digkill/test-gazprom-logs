@@ -1,0 +1,10 @@
+01.02.2018|12:23:21|192.168.0.1|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.2|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.3|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.4|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.5|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.6|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.7|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.8|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.9|http://yandex.ru|http://google.com
+01.02.2018|12:23:21|192.168.0.10|http://yandex.ru|http://google.com

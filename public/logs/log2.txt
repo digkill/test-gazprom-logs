@@ -1,0 +1,10 @@
+192.168.0.1|chrome|windows
+192.168.0.2|chrome|windows
+192.168.0.3|chrome|windows
+192.168.0.4|chrome|windows
+192.168.0.5|chrome|windows
+192.168.0.6|chrome|windows
+192.168.0.7|chrome|windows
+192.168.0.8|chrome|windows
+192.168.0.9|chrome|windows
+192.168.0.10|chrome|windows

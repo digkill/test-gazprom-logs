@@ -23,7 +23,7 @@ return [
                     'route'    => '/',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action'     => 'parseLog',
                     ],
                 ],
             ],
@@ -37,11 +37,23 @@ return [
                     ],
                 ],
             ],
+            'get' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/log',
+                    'defaults' => [
+                        'controller' => Controller\LogController::class,
+                        'action' => 'get',
+                        'isAuthorizationRequired' => false // set true if this api Required JWT Authorization.
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+            Controller\LogController::class => Controller\Factory\LogControllerFactory::class,
         ],
     ],
     'service_manager' => [

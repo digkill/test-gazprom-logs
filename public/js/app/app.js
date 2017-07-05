@@ -2,31 +2,66 @@ Ext.onReady(function () {
 
     Ext.define('User', {
         extend: 'Ext.data.Model',
-        fields: [ 'name', 'email', 'phone' ]
-    });
-
-
-
-    var userStore = Ext.create('Ext.data.Store', {
-        model: 'User',
-        data: [
-            { name: 'Lisa', email: 'lisa@simpsons.com', phone: '555-111-1224' },
-            { name: 'Bart', email: 'bart@simpsons.com', phone: '555-222-1234' },
-            { name: 'Homer', email: 'homer@simpsons.com', phone: '555-222-1244' },
-            { name: 'Marge', email: 'marge@simpsons.com', phone: '555-222-1254' }
+        fields: [
+            {name: 'date', type: 'string'},
+            {name: 'time', type: 'string'},
+            {name: 'ip', type: 'string'},
+            {name: 'urlFrom', type: 'string'},
+            {name: 'urlTo', type: 'string'},
+            {name: 'browser', type: 'string'},
+            {name: 'os', type: 'string'}
         ]
     });
 
+    var store = Ext.create('Ext.data.Store', {
+        model: 'User',
+        autoLoad: true,
+        pageSize: 10,
+        proxy: {
+            type: 'ajax',
+            url: 'http://gazprom.loc/log',
+            reader: {
+                type: 'json',
+                root: 'result.content',
+                totalProperty: 'result.total'
+            }
+        }
+    });
+
+
     Ext.create('Ext.grid.Panel', {
+        plugins: [{
+            ptype: 'gridfilters'
+        }],
         title: 'Logs',
-        store: userStore,
+        store: store,
+        dockedItems: [{
+            xtype: 'pagingtoolbar',
+            store: store,
+            dock: 'bottom',
+            displayInfo: true,
+            beforePageText: 'Страница',
+            afterPageText: 'из {0}',
+            displayMsg: 'Пользователи {0} - {1} из {2}'
+        }],
         columns: [
-            { text: 'Name', dataIndex: 'name' },
-            { text: 'Email', dataIndex: 'email', flex: 1 },
-            { text: 'Phone', dataIndex: 'phone' }
+            {
+                xtype: 'rownumberer'
+            },
+            {text: 'Дата', dataIndex: 'date', flex: 1},
+            {text: 'Время', dataIndex: 'time', flex: 1},
+            {
+                text: 'IP адрес пользователя', dataIndex: 'ip', flex: 1, filter: {type: 'string'}
+            },
+            {text: 'Откуда перешел', dataIndex: 'urlFrom', flex: 1},
+            {text: 'Куда перешел', dataIndex: 'urlTo', flex: 1},
+            {text: 'Браузер', dataIndex: 'browser', flex: 1},
+            {text: 'ОС', dataIndex: 'os', flex: 1},
         ],
-        height: 800,
-        width: 600,
+        xtype: 'actioncolumn',
+
+        height: 400,
+        width: 1000,
         renderTo: Ext.getElementById('js-grid-log-data')
     });
 

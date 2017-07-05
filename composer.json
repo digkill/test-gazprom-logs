@@ -17,7 +17,8 @@
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
         "doctrine/doctrine-orm-module": "^1.1",
-        "zendframework/zend-code": "^3.1"
+        "zendframework/zend-code": "^3.1",
+        "multidots/zf3-rest-api": "dev-master"
     },
     "autoload": {
         "psr-4": {

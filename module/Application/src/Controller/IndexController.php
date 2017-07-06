@@ -8,13 +8,14 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Log;
 use Zend\Code\Scanner\ClassScanner;
 use Zend\Code\Scanner\FileScanner;
 use Zend\View\View;
-
+use RestApi\Controller\ApiController;
 
 class IndexController extends AbstractActionController
 {
@@ -31,12 +32,15 @@ class IndexController extends AbstractActionController
      */
     private $logManager;
 
+
+    public $page = 0;
+
     /**
      * Constructor is used for injecting dependencies into the controller.
      */
     public function __construct($em, $logManager)
     {
-        $this->em = $logManager;
+        $this->em = $em;
         $this->logManager = $logManager;
     }
 
@@ -67,10 +71,14 @@ class IndexController extends AbstractActionController
            // $this->logManager->addNewLog($currentLine);
         }
 
-        var_dump($data);
+        $logsRepository = $this->em->getRepository(Log::class);
+        $countLog = $logsRepository->countLogs();
+
+        $this->page = $countLog / 4;
 
         $templateVars = [
-            'data' => $data
+            'data' => $data,
+
         ];
         return new ViewModel($templateVars);
     }
@@ -78,6 +86,22 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         return new ViewModel();
+    }
+
+    public function logsAction()
+    {
+
+        $request = $this->getRequest();
+
+        var_dump($request);
+
+die();
+        $this->httpStatusCode = 200;
+
+        // Set the response
+        $this->apiResponse['you_response'] = 'your response data';
+
+        return $this->createResponse();
     }
 
 }

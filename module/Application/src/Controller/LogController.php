@@ -47,21 +47,15 @@ class LogController extends ApiController
         $this->httpStatusCode = 200;
 
         $limit = $this->getRequest()->getQuery('limit', null);
-        $page = $this->getRequest()->getQuery('page', null);
         $start = $this->getRequest()->getQuery('start', null);
-    //    die();
         /**
          * @var LogRepository $logsRepository
          */
         $logsRepository = $this->em->getRepository(Log::class);
         $countLogs = $logsRepository->countLogs();
 
-       // $countLogs / $page ;
-
-
         $logsAll = $logsRepository->findAllLogs($limit, $start);
         $content = $logsAll->getArrayResult();
-
 
 
         $this->apiResponse['content'] = $content;

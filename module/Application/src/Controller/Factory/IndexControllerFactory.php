@@ -4,6 +4,7 @@ namespace Application\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Application\Service\LogManager;
+use Application\Service\InfoManager;
 use Application\Controller\IndexController;
 
 /**
@@ -16,8 +17,9 @@ class IndexControllerFactory implements FactoryInterface
     {
         $em = $container->get('doctrine.entitymanager.orm_default');
         $logManager = $container->get(LogManager::class);
+        $infoManager = $container->get(InfoManager::class);
 
         // Instantiate the controller and inject dependencies
-        return new IndexController($em, $logManager);
+        return new IndexController($em, $logManager, $infoManager);
     }
 }

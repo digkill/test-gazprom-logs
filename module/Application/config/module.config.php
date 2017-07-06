@@ -40,7 +40,7 @@ return [
             'get' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route'    => '/log',
+                    'route'    => '/api/log/get',
                     'defaults' => [
                         'controller' => Controller\LogController::class,
                         'action' => 'get',
@@ -59,6 +59,7 @@ return [
     'service_manager' => [
         'factories' => [
             Service\LogManager::class => Service\Factory\LogManagerFactory::class,
+            Service\InfoManager::class => Service\Factory\InfoManagerFactory::class,
         ],
     ],
     'view_manager' => [

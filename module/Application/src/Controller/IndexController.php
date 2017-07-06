@@ -8,18 +8,11 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
-use Doctrine\ORM\Mapping as ORM;
-use Application\Entity\Log;
-use Zend\Code\Scanner\ClassScanner;
-use Zend\Code\Scanner\FileScanner;
-use Zend\View\View;
-use RestApi\Controller\ApiController;
+use Application\Entity\Info;
 
 class IndexController extends AbstractActionController
 {
-
     /**
      * Entity manager.
      * @var Doctrine\ORM\EntityManager
@@ -32,76 +25,76 @@ class IndexController extends AbstractActionController
      */
     private $logManager;
 
+    /**
+     * Post manager.
+     * @var Application\Service\InfoManager
+     */
+    private $infoManager;
 
-    public $page = 0;
+    /**
+     * Path of public
+     * @var string
+     */
+    private $publicPath;
 
     /**
      * Constructor is used for injecting dependencies into the controller.
      */
-    public function __construct($em, $logManager)
+    public function __construct($em, $logManager, $infoManager)
     {
         $this->em = $em;
         $this->logManager = $logManager;
+        $this->infoManager = $infoManager;
+        $this->publicPath = $_SERVER['DOCUMENT_ROOT'];
     }
 
     public function parseLogAction()
     {
-
-        $publicPath = $_SERVER['DOCUMENT_ROOT'];
-        $logPathFirst = $publicPath . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'log1.txt';
-        $logPathSecond = $publicPath . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'log2.txt';
+        $logPathFirst = $this->publicPath . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'log1.txt';
+        $logPathSecond = $this->publicPath . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'log2.txt';
 
         $logContentFirst = file($logPathFirst, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $logContentSecond = file($logPathSecond, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        foreach ($logContentFirst as $line => $currentLine) {
-            $logContentFirst[$line] .= '|' . $logContentSecond[$line];
-        }
 
+        /*
+                $data = [];
+
+                foreach ($logContentSecond as $line => $currentLine) {
+                    list($data[$line]['ip'], $data[$line]['browser'], $data[$line]['os'] ) = explode('|', $currentLine);
+                }
+
+                foreach ($data as $currentLine) {
+                    $this->infoManager->addNewInfo($currentLine);
+                }
+
+        */
+        /*
         $data = [];
 
-        foreach ($logContentFirst as $line => $currentFile) {
-            list($data[$line]['date'], $data[$line]['time'], $data[$line]['ip'],
-                $data[$line]['urlFrom'], $data[$line]['urlTo'], $data[$line]['ip'],
-                $data[$line]['browser'], $data[$line]['os'])
-                = explode('|', $currentFile);
+        foreach ($logContentFirst as $line => $currentLine) {
+            list($data[$line]['date'], $data[$line]['time'], $data[$line]['ip'], $data[$line]['urlFrom'], $data[$line]['urlTo']) = explode('|', $currentLine);
         }
 
         foreach ($data as $currentLine) {
-           // $this->logManager->addNewLog($currentLine);
+            $info = $this->em->getRepository(Info::class)->findOneBy(array('ip' => $currentLine['ip']));
+
+
+            if ($info == null) {
+                continue;
+            }
+
+            $this->logManager->addNewLog($info, $currentLine);
         }
+        */
 
-        $logsRepository = $this->em->getRepository(Log::class);
-        $countLog = $logsRepository->countLogs();
-
-        $this->page = $countLog / 4;
-
-        $templateVars = [
-            'data' => $data,
-
-        ];
+        $templateVars = [];
         return new ViewModel($templateVars);
     }
 
     public function indexAction()
     {
         return new ViewModel();
-    }
-
-    public function logsAction()
-    {
-
-        $request = $this->getRequest();
-
-        var_dump($request);
-
-die();
-        $this->httpStatusCode = 200;
-
-        // Set the response
-        $this->apiResponse['you_response'] = 'your response data';
-
-        return $this->createResponse();
     }
 
 }

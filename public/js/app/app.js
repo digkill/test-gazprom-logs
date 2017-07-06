@@ -3,6 +3,7 @@ Ext.onReady(function () {
     Ext.define('User', {
         extend: 'Ext.data.Model',
         fields: [
+            {name: 'id', type: 'integer'},
             {name: 'date', type: 'string'},
             {name: 'time', type: 'string'},
             {name: 'ip', type: 'string'},
@@ -19,7 +20,7 @@ Ext.onReady(function () {
         pageSize: 10,
         proxy: {
             type: 'ajax',
-            url: 'http://gazprom.loc/log',
+            url: '/api/log/get',
             reader: {
                 type: 'json',
                 root: 'result.content',
@@ -48,6 +49,8 @@ Ext.onReady(function () {
             {
                 xtype: 'rownumberer'
             },
+            {text: 'ID', dataIndex: 'id', flex: 1},
+
             {text: 'Дата', dataIndex: 'date', flex: 1},
             {text: 'Время', dataIndex: 'time', flex: 1},
             {

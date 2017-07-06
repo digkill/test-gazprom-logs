@@ -2,9 +2,10 @@
 namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class Shadow
+ * Class Log
  * @package Application\Entity
  * @ORM\Entity(repositoryClass="\Application\Repository\LogRepository")
  * @ORM\Table(name="log")
@@ -29,9 +30,10 @@ class Log
     protected $time;
 
     /**
-     * @ORM\Column(name="ip")
+     * @ORM\ManyToOne(targetEntity="Application\Entity\Info", inversedBy="logs")
+     * @ORM\JoinColumn(name="info_id", referencedColumnName="id")
      */
-    protected $ip;
+    protected $info;
 
     /**
      * @ORM\Column(name="urlfrom")
@@ -42,16 +44,6 @@ class Log
      * @ORM\Column(name="urlto")
      */
     protected $urlTo;
-
-    /**
-     * @ORM\Column(name="browser")
-     */
-    protected $browser;
-
-    /**
-     * @ORM\Column(name="os")
-     */
-    protected $os;
 
     /**
      * Returns ID of this log.
@@ -114,23 +106,22 @@ class Log
     }
 
     /**
-     * Returns IP of this log.
-     *
-     * @return string
-     */
-    public function getIp()
+      * Returns associated info.
+      * @return \Application\Entity\Info
+      */
+    public function getInfo()
     {
-        return $this->ip;
+        return $this->info;
     }
 
     /**
-     * Sets IP of this log.
-     *
-     * @param $ip
+     * Sets associated info.
+     * @param \Application\Entity\Info $info
      */
-    public function setIp($ip)
+    public function setInfo($info)
     {
-        $this->ip = $ip;
+        $this->info = $info;
+        $info->addLog($this);
     }
 
     /**
@@ -171,46 +162,6 @@ class Log
     public function setUrlTo($urlTo)
     {
         $this->urlTo = $urlTo;
-    }
-
-    /**
-     * Returns Browser of this log.
-     *
-     * @return string
-     */
-    public function getBrowser()
-    {
-        return $this->browser;
-    }
-
-    /**
-     * Sets Browser of this log.
-     *
-     * @param $browser
-     */
-    public function setBrowser($browser)
-    {
-        $this->browser = $browser;
-    }
-
-    /**
-     * Returns OS of this log.
-     *
-     * @return string
-     */
-    public function getOs()
-    {
-        return $this->browser;
-    }
-
-    /**
-     * Sets OS of this log.
-     *
-     * @param $os
-     */
-    public function setOs($os)
-    {
-        $this->os = $os;
     }
 
 }

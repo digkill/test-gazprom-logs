@@ -1,8 +1,11 @@
 <?php
+
 namespace Application\Service;
+
 use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Application\Entity\Log;
+use Application\Entity\Info;
 
 /**
  * The LogManager service is responsible for adding new log record
@@ -27,18 +30,19 @@ class LogManager
     /**
      * This method adds a new logs.
      */
-    public function addNewLog($data)
+    public function addNewLog($info, $data)
     {
         $log = new Log();
-        $date = date('Y-m-d');
+        $log->setInfo($info);
+
+        $date = date('Y-m-d', $data['date']);
         $log->setDate($date);
-        $time = date('H:i:s');
+        $time = date('H:i:s', $data['time']);
         $log->setTime($time);
-        $log->setIp($data['ip']);
+
         $log->setUrlFrom($data['urlFrom']);
         $log->setUrlTo($data['urlTo']);
-        $log->setBrowser($data['browser']);
-        $log->setOs($data['os']);
+
         $this->em->persist($log);
         $this->em->flush();
     }

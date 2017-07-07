@@ -54,7 +54,7 @@ class LogController extends ApiController
         $logsRepository = $this->em->getRepository(Log::class);
         $countLogs = $logsRepository->countLogs();
 
-        $logsAll = $logsRepository->findAllLogs($limit, $start);
+        $logsAll = $logsRepository->findAllLogsNative($limit, $start);
         $content = $logsAll->getArrayResult();
 
 

@@ -50,10 +50,12 @@ class LogRepository extends EntityRepository
         $rsm->addFieldResult('i', 'os', 'os');
         $rsm->addFieldResult('i', 'ip', 'ip');
         $rsm->addFieldResult('i', 'browser', 'browser');
+        $rsm->addScalarResult('urlfromfirst', 'urlFromFirst');
 
         $sql = '
               SELECT l.id, l.date, l.time, l.urlfrom, l.urlto,
-                     i.id as info_id, i.os as os,  i.ip, i.browser
+                     i.id as info_id, i.os,  i.ip, i.browser,
+                     (SELECT ll.urlfrom FROM log ll WHERE ll.info_id = i.id ORDER BY ll.time ASC, ll.date ASC lIMIT 1) as urlfromfirst
                 FROM log l
                   LEFT JOIN info i ON (l.info_id = i.id)
                   LIMIT :limit OFFSET :start

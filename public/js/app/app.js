@@ -8,11 +8,11 @@ Ext.onReady(function () {
             {name: 'id', type: 'integer'},
             {name: 'date', type: 'string'},
             {name: 'time', type: 'string'},
-            {name: 'ip', type: 'string'},
             {name: 'urlFrom', type: 'string'},
             {name: 'urlTo', type: 'string'},
-            {name: 'browser', type: 'string'},
-            {name: 'os', type: 'string'}
+            {name: 'ip', mapping: 'info.ip', type: 'string'},
+            {name: 'browser', mapping: 'info.browser', type: 'string'},
+            {name: 'os', mapping: 'info.os', type: 'string' },
         ]
     });
 
@@ -57,13 +57,7 @@ Ext.onReady(function () {
             {text: 'Время', dataIndex: 'time', flex: 1},
 
             {
-                xtype: 'gridcolumn',
-                text: 'Подробная информация',
-                columns: [
-                    {
-                        text: 'Откуда перешел', dataIndex: 'urlFrom', flex: 1
-                    }
-                ]
+                text: 'IP',  dataIndex: 'ip', flex: 1
             },
             {text: 'Откуда перешел', dataIndex: 'urlFrom', flex: 1},
             {text: 'Куда перешел', dataIndex: 'urlTo', flex: 1},
@@ -77,10 +71,7 @@ Ext.onReady(function () {
             ptype: 'gridfilters'
         }],
         title: 'Logs',
-        store: {
-          fields: Log,
-            data: transformData
-        },
+        store: store,
         dockedItems: [{
             xtype: 'pagingtoolbar',
             store: store,
